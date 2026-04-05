@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Makanaka 💖</title>
+<style>
+body {
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  color:white;
+  text-align:center;
+  background:black;
+  overflow:hidden;
+}
+.hidden { display:none; }
+#startScreen {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:28px;
+  z-index:10;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse {0%,100% {opacity:1;} 50% {opacity:0.6;}}
+.glow { text-shadow:0 0 10px #fff,0 0 20px #f0f; }
+.container,.section {padding:20px;}
+.btn {
+  display:block;
+  margin:12px auto;
+  padding:12px;
+  background:rgba(255,255,255,0.1);
+  border:none;
+  border-radius:12px;
+  color:white;
+  width:80%;
+  font-size:16px;
+}
+.particle {
+  position:fixed;
+  font-size:24px;
+  animation:float 2.5s forwards;
+}
+@keyframes float {
+  to {transform:translateY(-80vh) scale(1.5); opacity:0;}
+}
+.stars {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url('https://www.transparenttextures.com/patterns/stardust.png');
+  animation:move 60s linear infinite;
+  z-index:-1;
+}
+@keyframes move {from {background-position:0 0;} to {background-position:2000px 2000px;}}
+</style>
+</head>
+<body>
+
+<div id="startScreen" onclick="startSite()">
+  <h1>Tap to open 💖</h1>
+</div>
+
+<iframe id="music" width="0" height="0"
+src="https://www.youtube.com/embed/nsdQu4-KYyo?enablejsapi=1&loop=1&playlist=nsdQu4-KYyo"
+frameborder="0"></iframe>
+
+<div class="stars"></div>
+
+<div id="home" class="container hidden">
+<h1 class="glow">Hey Makanaka 💖</h1>
+<p id="intro"></p>
+<button class="btn" onclick="show('safe')">My Safe Space</button>
+<button class="btn" onclick="show('universe')">In Every Universe</button>
+<button class="btn" onclick="show('talk')">Hear From Me</button>
+<button class="btn" onclick="unlockVault()">Hidden Section 🔐</button>
+</div>
+
+<div id="safe" class="section hidden">
+<h2>My Safe Space</h2>
+<p id="safeText"></p>
+<div class="back" onclick="show('home')">← back</div>
+</div>
+
+<div id="universe" class="section hidden">
+<h2>In Every Universe</h2>
+<p id="uniText"></p>
+<div class="back" onclick="show('home')">← back</div>
+</div>
+
+<div id="talk" class="section hidden">
+<h2>If You Ever Want to Hear From Me</h2>
+<div id="chat"></div>
+<div class="back" onclick="show('home')">← back</div>
+</div>
+
+<div id="vault" class="section hidden">
+<h2>If You Ever Need a Reminder</h2>
+<p id="vaultText"></p>
+<div class="back" onclick="show('home')">← back</div>
+</div>
+
+<script>
+// START SITE
+function startSite(){
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("home").classList.remove("hidden");
+
+  let iframe = document.getElementById("music");
+  iframe.src += "&autoplay=1";
+
+  typeText("intro","Hey Makanaka… I know I hurt you, and I hate that I made you feel overwhelmed. I just needed you to feel this.");
+  typeText("safeText","You were supposed to feel safe with me… and I messed that up. I’m really sorry.");
+  typeText("uniText","In another life I do everything right… but even in this one, I’d still choose you. Every time.");
+}
+
+// TYPE EFFECT
+function typeText(id,text){
+  let el=document.getElementById(id);
+  el.innerHTML="";
+  let i=0;
+  function typing(){if(i<text.length){el.innerHTML+=text.charAt(i);i++;setTimeout(typing,30);}}
+  typing();
+}
+
+// SHOW SECTION
+function show(section){
+  document.querySelectorAll('.container,.section').forEach(el=>el.classList.add("hidden"));
+  document.getElementById(section).classList.remove("hidden");
+
+  if(section==="vault"){
+    document.getElementById("vaultText")="I know I hurt you. I’m learning. And I’d still choose you. Always.";
+    explodeParticles();
+  }
+
+  if(section==="talk"){
+    let chat=document.getElementById("chat");
+    chat.innerHTML="";
+    setTimeout(()=>chat.innerHTML+="<p><b>Her:</b> I feel overwhelmed</p>",1000);
+    setTimeout(()=>chat.innerHTML+="<p><b>Me:</b> I understand… I didn’t listen properly before.</p>",2500);
+    setTimeout(()=>chat.innerHTML+="<p><b>Her:</b> I need space</p>",4000);
+    setTimeout(()=>chat.innerHTML+="<p><b>Me:</b> Take your time. I’ll be here.</p>",5500);
+    setTimeout(()=>chat.innerHTML+="<p><b>Her:</b> I miss you</p>",7000);
+    setTimeout(()=>chat.innerHTML+="<p class='glow'><b>Me:</b> I miss you more than I can explain.</p>",8500);
+  }
+}
+
+// EXPLODE PARTICLES
+function explodeParticles(){
+  let icons=["🌸","💖","🌼","💮"];
+  for(let i=0;i<40;i++){
+    let p=document.createElement("div");
+    p.className="particle";
+    p.innerText=icons[Math.floor(Math.random()*icons.length)];
+    p.style.left=Math.random()*100+"vw";
+    p.style.top="80vh";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),3000);
+  }
+}
+
+// CLICK HEARTS EVERYWHERE
+document.addEventListener("click",()=>{
+  let heart=document.createElement("div");
+  heart.className="particle";
+  heart.innerText="💖";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.top="80vh";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),2500);
+});
+
+// UNLOCK VAULT
+function unlockVault(){
+  let pass=prompt("Enter password:");
+  if(pass==="tamakar08") show("vault");
+  else alert("Wrong password");
+}
+</script>
+</body>
+  </html>
